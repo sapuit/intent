@@ -1,6 +1,6 @@
 package com.example.administrator.myapplication;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,11 +27,12 @@ public class MainActivity extends AppCompatActivity {
         btnMyOtherActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startMyOtherActivity();
+                //startMyOtherActivity();
                 startSubActivity();
             }
         });
     }
+
 
     // Start MyOtherACtivity
     private void startMyOtherActivity() {
@@ -39,30 +40,52 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
     // Start sub activity for a result
     private void startSubActivity() {
         Intent intent = new Intent(MainActivity.this, MyOtherActivity.class);
         startActivityForResult(intent, SHOW_SUBACTIVITY);
     }
 
+    /**
+     * get result from subActivity
+     * @param requestCode : to launch the return subActivity
+     * @param resultCode : to indicate result
+     * @param data : to return packet data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.i("info", String.valueOf(requestCode));
         if (requestCode == SHOW_SUBACTIVITY) {
-            Log.i("info", String.valueOf(requestCode));
+            // check requestCode
+            //Log.i("info", String.valueOf(requestCode));
             switch (resultCode) {
                 case SHOW_RESULTOK:
-                    Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
+                    getData(data);
                     break;
                 case SHOW_RESULTCANCEL:
                     Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show();
                     break;
-
                 default: break;
             }
         }
+    }
+
+    // get data from subACtivity
+    private void getData(Intent data) {
+        try {
+            // get data in bundle
+            Bundle bundle = data.getBundleExtra("packet");
+            String s = bundle.getString("hello");
+            // get data from intent
+            String s1 = data.getStringExtra("MyName");
+            Toast.makeText(this, "Bundle data : " + s +
+                    ", intent data : " + s1, Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            Log.e("getData",e.getMessage());
+        }
+
     }
 
     @Override

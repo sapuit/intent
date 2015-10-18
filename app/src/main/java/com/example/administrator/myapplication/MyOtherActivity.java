@@ -22,9 +22,7 @@ public class MyOtherActivity extends AppCompatActivity {
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MyOtherActivity.this, MainActivity.class);
-                setResult(MainActivity.SHOW_RESULTOK, intent);
-                finish();
+                sendData();
             }
         });
 
@@ -36,6 +34,20 @@ public class MyOtherActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
+    // return data for MainActivity
+    public void sendData(){
+        Intent intent = new Intent(MyOtherActivity.this, MainActivity.class);
+        Bundle bundle = new Bundle();
+        // put data into bundle packet
+        bundle.putString("hello","Xin chao");
+        // put bundle packet into intent
+        intent.putExtra("packet",bundle);
+        // put other data into intent
+        intent.putExtra("MyName","Sap");
+        // return MainActivity
+        setResult(MainActivity.SHOW_RESULTOK, intent);
+        finish();
     }
 }
